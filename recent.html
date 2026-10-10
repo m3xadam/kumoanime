@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#09090b" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="description" content="Browse the latest anime episodes and updates on Kumo Anime." />
+    <title>Latest Updates — Kumo Anime</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="covers.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="recent.js" defer></script>
+  </head>
+  <body data-page="recent">
+    <header class="site-header latest-header">
+      <a class="brand" href="index.html" aria-label="Kumo Anime home">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span>kumo anime</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html#home">Home</a>
+        <a class="nav-link" href="index.html#movies">Discover</a>
+        <a class="nav-link" href="index.html#series">Series</a>
+        <a class="nav-link active" href="recent.html" aria-current="page">Latest updates</a>
+      </nav>
+      <div class="header-actions">
+        <label class="search-box" for="latest-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input id="latest-search" type="search" placeholder="Search anime..." autocomplete="off" />
+          <kbd>/</kbd>
+        </label>
+      </div>
+    </header>
+    <main class="latest-page">
+      <section class="latest-intro">
+        <p class="section-kicker">FRESH TO KUMO</p>
+        <h1>Latest updates</h1>
+        <p>Catch up on the newest additions to the anime library, sorted by upload date.</p>
+        <div class="latest-summary"><span class="live-dot"></span><span id="latest-count">Loading updates…</span></div>
+      </section>
+      <section class="latest-listing" aria-labelledby="latest-list-title">
+        <div class="latest-listing-heading">
+          <h2 id="latest-list-title">Recently uploaded</h2>
+          <span>NEWEST FIRST</span>
+        </div>
+        <div class="latest-grid" id="latest-grid" aria-live="polite"></div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span></a>
+      <p>Your next world is one episode away.</p>
+      <span>© 2025 Kumo Anime. All rights reserved.</span>
+    </footer>
+  </body>
+</html>

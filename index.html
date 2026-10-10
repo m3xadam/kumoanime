@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#09090b" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta
+      name="description"
+      content="Stream anime series, anime films, and new episodes on Kumo Anime."
+    />
+    <title>Kumo — Your anime, your way</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="covers.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="catalog">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Kumo Anime home">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span>kumo anime</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#home">Home</a>
+        <a class="nav-link" href="#movies">Discover</a>
+        <a class="nav-link" href="#series">Series</a>
+        <a class="nav-link" href="recent.html">Recently uploaded</a>
+      </nav>
+
+      <div class="header-actions">
+        <label class="search-box" for="search-input">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input id="search-input" type="search" placeholder="Search anime..." autocomplete="off" />
+          <kbd>/</kbd>
+        </label>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-backdrop"></div>
+        <div class="hero-content">
+          <div class="eyebrow"><span class="eyebrow-line"></span> POPULAR ANIME</div>
+          <h1 id="hero-title">SOLO<br />LEVELING</h1>
+          <div class="hero-meta">
+            <span class="rating"><span aria-hidden="true">★</span> 9.0</span>
+            <span>2024</span>
+            <span>2 seasons · 25 episodes</span>
+            <span class="quality-badge">SUB · DUB</span>
+          </div>
+          <p class="hero-description">
+            A low-ranked hunter gains a mysterious power that lets him grow stronger
+            with every battle.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-primary" id="hero-play" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"></path></svg>
+              Start watching
+            </button>
+            <button class="button button-secondary" id="hero-info" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path>
+              </svg>
+              More info
+            </button>
+          </div>
+        </div>
+        <div class="hero-pagination" aria-label="Featured title 1 of 3">
+          <span class="pagination-active"></span><span></span><span></span>
+        </div>
+        <div class="hero-caption"><span></span> NOW STREAMING</div>
+        <div class="hero-shade"></div>
+      </section>
+
+      <section class="browse-section" id="movies">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">HANDPICKED FOR YOU</p>
+            <h2>Find your next favorite anime</h2>
+          </div>
+          <button class="text-button" id="view-all" type="button">
+            View catalog <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+
+        <div class="genre-list" role="group" aria-label="Filter by anime genre">
+          <button class="genre-chip selected" type="button" data-genre="All" aria-pressed="true">For you</button>
+          <button class="genre-chip" type="button" data-genre="Action">Action</button>
+          <button class="genre-chip" type="button" data-genre="Fantasy">Fantasy</button>
+          <button class="genre-chip" type="button" data-genre="Romance">Romance</button>
+          <button class="genre-chip" type="button" data-genre="Sci-Fi">Sci-Fi</button>
+          <button class="genre-chip" type="button" data-genre="Supernatural">Supernatural</button>
+          <button class="genre-chip" type="button" data-genre="Sports">Sports</button>
+          <button class="genre-chip" type="button" data-genre="Drama">Drama</button>
+          <button class="genre-chip" type="button" data-genre="Mystery">Mystery</button>
+          <button class="genre-chip" type="button" data-genre="Comedy">Comedy</button>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="trending-title">
+        <div class="row-heading">
+          <h2 id="trending-title">Popular anime this week <span class="heading-accent">↗</span></h2>
+          <div class="carousel-controls">
+            <button class="carousel-button" type="button" data-scroll="trending-row" data-direction="-1" aria-label="Scroll trending left">‹</button>
+            <button class="carousel-button" type="button" data-scroll="trending-row" data-direction="1" aria-label="Scroll trending right">›</button>
+          </div>
+        </div>
+        <div class="movie-row" id="trending-row" aria-live="polite"></div>
+      </section>
+
+      <section class="content-section" id="series" aria-labelledby="popular-title">
+        <div class="row-heading">
+          <div>
+            <p class="section-kicker">MORE TO EXPLORE</p>
+            <h2 id="popular-title">More popular anime</h2>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-button" type="button" data-scroll="recommended-row" data-direction="-1" aria-label="Scroll recommendations left">‹</button>
+            <button class="carousel-button" type="button" data-scroll="recommended-row" data-direction="1" aria-label="Scroll recommendations right">›</button>
+          </div>
+        </div>
+        <div class="movie-row" id="recommended-row" aria-live="polite"></div>
+      </section>
+
+      <section class="continue-section content-section">
+        <div class="row-heading">
+          <div>
+            <p class="section-kicker">YOUR NEXT EPISODE IS WAITING</p>
+            <h2>Continue watching</h2>
+          </div>
+          <a class="text-button" href="#movies">See all <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="continue-card">
+          <div class="continue-image">
+            <img alt="Original illustrated cover for Jujutsu Kaisen" />
+            <button class="continue-play" type="button" data-play="Jujutsu Kaisen" data-season="1" data-episode="3">▶</button>
+            <span class="episode-tag">S1:E3</span>
+            <div class="progress-track"><span style="width: 64%"></span></div>
+          </div>
+          <div class="continue-info">
+            <span class="continue-category">ACTION · SUPERNATURAL</span>
+            <h3>Jujutsu Kaisen</h3>
+            <p>Season 1, episode 3 · Continue watching</p>
+          </div>
+          <button class="more-button" type="button" aria-label="More options for Jujutsu Kaisen">···</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span></a>
+      <p>Your next world is one episode away.</p>
+      <span>© 2025 Kumo Anime. All rights reserved.</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
