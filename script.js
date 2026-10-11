@@ -24,6 +24,58 @@ if (document.body.dataset.page === "catalog") {
     return item.seasonYear || item.startDate?.year || "Year unknown";
   }
 
+  function formatCountdown(seconds) {
+    const totalSeconds = Math.max(0, Math.floor(seconds));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+
+    if (days > 0) return `${days}d ${hours}h`;
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    if (minutes > 0) return `${minutes}m ${secs}s`;
+    return `${secs}s`;
+  }
+
+  function nextEpisodeText(item, now = Date.now()) {
+    const next = item?.nextAiringEpisode;
+    const current = Number(next?.episode);
+    if (!Number.isFinite(current)) return "";
+
+    const totalEpisodes = Number(item?.episodes);
+    const airingAt = Number(next?.airingAt);
+    const countdownSeconds = Number.isFinite(airingAt)
+      ? Math.max(0, airingAt - Math.floor(now / 1000))
+      : Number(next?.timeUntilAiring) || 0;
+
+    if (countdownSeconds > 0) {
+      const label = formatCountdown(countdownSeconds);
+      return totalEpisodes > 0 ? `Next ep ${current}/${totalEpisodes} · ${label}` : `Next ep ${current} · ${label}`;
+    }
+
+    return totalEpisodes > 0 ? `Next ep ${current}/${totalEpisodes}` : `Next ep ${current}`;
+  }
+
+  function updateCountdownBadges() {
+    document.querySelectorAll(".card-next-episode, .anilist-next-episode, .hero-next-episode").forEach((badge) => {
+      const airingAt = Number(badge.dataset.airingAt);
+      const episode = Number(badge.dataset.episode);
+      const totalEpisodes = Number(badge.dataset.totalEpisodes || 0);
+      if (!Number.isFinite(airingAt) || !Number.isFinite(episode)) return;
+
+      const value = nextEpisodeText({
+        episodes: totalEpisodes,
+        nextAiringEpisode: { airingAt, episode },
+      });
+      if (value) badge.textContent = value;
+    });
+  }
+
+  function startLiveCountdownTicker() {
+    if (window.__kumoCountdownTicker) return;
+    window.__kumoCountdownTicker = window.setInterval(updateCountdownBadges, 1000);
+  }
+
   function animeCard(item, compact = false) {
     const title = animeTitle(item);
     const genres = item.genres || [];
@@ -51,6 +103,17 @@ if (document.body.dataset.page === "catalog") {
     score.textContent = item.averageScore ? `★ ${(item.averageScore / 10).toFixed(1)}` : "Not rated";
     poster.append(score);
 
+    const nextEpisode = nextEpisodeText(item);
+    if (nextEpisode) {
+      const count = document.createElement("span");
+      count.className = compact ? "card-next-episode" : "anilist-next-episode";
+      count.dataset.airingAt = String(Number(item?.nextAiringEpisode?.airingAt) || 0);
+      count.dataset.episode = String(Number(item?.nextAiringEpisode?.episode) || 0);
+      count.dataset.totalEpisodes = String(Number(item?.episodes) || 0);
+      count.textContent = nextEpisode;
+      poster.append(count);
+    }
+
     const heading = document.createElement("h3");
     heading.textContent = title;
     const metadata = document.createElement("p");
@@ -64,10 +127,6 @@ if (document.body.dataset.page === "catalog") {
 
     if (compact) {
       heading.className = "card-title";
-      const hint = document.createElement("span");
-      hint.className = "card-open-hint";
-      hint.textContent = "VIEW ANIME ↗";
-      poster.append(hint);
       const info = document.createElement("div");
       info.className = "card-info";
       info.append(heading, metadata, genreLine);
@@ -113,13 +172,21 @@ if (document.body.dataset.page === "catalog") {
 
     const details = document.querySelector(".hero-meta");
     details.replaceChildren();
+    const nextEpisode = nextEpisodeText(item);
     for (const value of [
       item.averageScore ? `★ ${(item.averageScore / 10).toFixed(1)}` : "Not rated",
       animeYear(item),
       item.episodes ? `${item.episodes} episodes` : item.status?.replaceAll("_", " "),
+      nextEpisode || "",
     ].filter(Boolean)) {
       const label = document.createElement("span");
       label.textContent = value;
+      if (nextEpisode && value === nextEpisode) {
+        label.className = "hero-next-episode";
+        label.dataset.airingAt = String(Number(item?.nextAiringEpisode?.airingAt) || 0);
+        label.dataset.episode = String(Number(item?.nextAiringEpisode?.episode) || 0);
+        label.dataset.totalEpisodes = String(Number(item?.episodes) || 0);
+      }
       details.append(label);
     }
     const description = item.description || "No synopsis is available for this anime.";
@@ -278,6 +345,7 @@ if (document.body.dataset.page === "catalog") {
   retry.addEventListener("click", () => loadAnime(page || 1, page > 1));
   homeSeasonRetry.addEventListener("click", loadHomeSeason);
 
+  startLiveCountdownTicker();
   loadHomeSeason();
   loadAnime();
 }

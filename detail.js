@@ -28,6 +28,35 @@ function setText(selector, value, fallback = "Not listed") {
   document.querySelector(selector).textContent = value || fallback;
 }
 
+function formatCountdown(seconds) {
+  const totalSeconds = Math.max(0, Math.floor(seconds));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  if (days > 0) return `${days}d ${hours}h`;
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  if (minutes > 0) return `${minutes}m ${remainingSeconds}s`;
+  return `${remainingSeconds}s`;
+}
+
+function updateNextEpisodeCountdown(badge) {
+  const airingAt = Number(badge.dataset.airingAt);
+  const episode = Number(badge.dataset.episode);
+  const totalEpisodes = Number(badge.dataset.totalEpisodes || 0);
+  if (!Number.isFinite(airingAt) || airingAt <= 0 || !Number.isFinite(episode)) return;
+
+  const remaining = Math.max(0, airingAt - Math.floor(Date.now() / 1000));
+  const episodeText = totalEpisodes > 0
+    ? `Next ep ${episode}/${totalEpisodes}`
+    : `Next ep ${episode}`;
+
+  badge.textContent = remaining > 0
+    ? `${episodeText} · ${formatCountdown(remaining)}`
+    : episodeText;
+}
+
 function validExternalUrl(value) {
   try {
     const url = new URL(value);
@@ -224,6 +253,17 @@ async function loadAnimeDetails() {
       const span = document.createElement("span");
       span.textContent = value;
       metadata.append(span);
+    }
+    const airingEpisode = item.nextAiringEpisode;
+    if (airingEpisode?.episode && airingEpisode?.airingAt) {
+      const countdown = document.createElement("span");
+      countdown.className = "hero-next-episode";
+      countdown.dataset.airingAt = String(airingEpisode.airingAt);
+      countdown.dataset.episode = String(airingEpisode.episode);
+      countdown.dataset.totalEpisodes = String(item.episodes || 0);
+      updateNextEpisodeCountdown(countdown);
+      metadata.append(countdown);
+      window.setInterval(() => updateNextEpisodeCountdown(countdown), 1000);
     }
     const safeImageUrl = validExternalUrl(imageUrl);
     if (safeImageUrl) document.querySelector("#detail-backdrop").style.backgroundImage = `url("${safeImageUrl}")`;

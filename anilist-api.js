@@ -22,6 +22,7 @@
     format
     averageScore
     genres
+    nextAiringEpisode { airingAt episode timeUntilAiring }
   `;
 
   const ANIME_FIELDS = `
