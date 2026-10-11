@@ -1,5 +1,5 @@
 if (document.body.dataset.page === "catalog") {
-  const searchInput = document.querySelector("#search-input");
+  window.initAnimeSearch("search-input", "search-toggle");
   const catalog = document.querySelector("#anilist-grid");
   const status = document.querySelector("#anilist-status");
   const count = document.querySelector("#anilist-count");
@@ -10,15 +10,12 @@ if (document.body.dataset.page === "catalog") {
   const homeSeasonGrid = document.querySelector("#home-season-grid");
   const homeSeasonStatus = document.querySelector("#home-season-status");
   const homeSeasonRetry = document.querySelector("#home-season-retry");
-  let searchTerm = "";
   let selectedGenre = "";
   let page = 1;
   let hasNextPage = false;
   let loading = false;
   let reloadWhenIdle = false;
   let requestId = 0;
-  let searchTimer;
-
   function animeTitle(item) {
     return item.title?.english || item.title?.romaji || item.title?.native || "Untitled anime";
   }
@@ -181,19 +178,6 @@ if (document.body.dataset.page === "catalog") {
 
   async function loadAnime(nextPage = 1, append = false) {
     if (loading) return;
-    if (searchTerm.length > 0 && searchTerm.length < 3) {
-      requestId += 1;
-      catalog.replaceChildren();
-      count.textContent = "";
-      loadMore.hidden = true;
-      retry.hidden = true;
-      trendingRow.replaceChildren();
-      recommendedRow.replaceChildren();
-      resetHero("Search AniList", "Enter at least 3 characters to search the anime catalog.");
-      showStatus("Enter at least 3 characters to search the AniList catalog.");
-      return;
-    }
-
     const currentRequest = ++requestId;
     loading = true;
     loadMore.disabled = true;
@@ -215,7 +199,6 @@ if (document.body.dataset.page === "catalog") {
     try {
       const result = await window.AniList.animePage({
         page: nextPage,
-        search: searchTerm,
         genre: selectedGenre,
       });
       if (currentRequest !== requestId) return;
@@ -276,19 +259,6 @@ if (document.body.dataset.page === "catalog") {
       });
       refreshAnime();
     });
-  });
-
-  searchInput.addEventListener("input", () => {
-    searchTerm = searchInput.value.trim();
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(refreshAnime, 600);
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-      event.preventDefault();
-      searchInput.focus();
-    }
   });
 
   document.querySelectorAll("[data-scroll]").forEach((button) => {

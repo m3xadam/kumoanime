@@ -143,8 +143,8 @@
     return pending;
   }
 
-  const pageQuery = `query AnimeCatalog($page: Int!, $search: String, $genre: String) {
-    Page(page: $page, perPage: 24) {
+  const pageQuery = `query AnimeCatalog($page: Int!, $perPage: Int!, $search: String, $genre: String) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo { currentPage hasNextPage total }
       media(type: ANIME, search: $search, genre: $genre, sort: POPULARITY_DESC, isAdult: false) {
         ${CARD_FIELDS}
@@ -204,9 +204,10 @@
     animeTitle(item) {
       return item.title?.english || item.title?.romaji || item.title?.native || "Untitled anime";
     },
-    async animePage({ page = 1, search = "", genre = "" } = {}) {
+    async animePage({ page = 1, perPage = 24, search = "", genre = "" } = {}) {
       const data = await query(pageQuery, {
         page,
+        perPage,
         search: search || null,
         genre: genre || null,
       });

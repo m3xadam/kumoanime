@@ -91,6 +91,7 @@ async function loadAnimeDetails() {
     const genres = (item.genres || []).join(" · ");
     const year = item.seasonYear || item.startDate?.year;
     const imageUrl = item.bannerImage || item.coverImage?.extraLarge || item.coverImage?.large;
+    const posterUrl = item.coverImage?.extraLarge || item.coverImage?.large;
 
     document.title = `${title} — Kumo Anime`;
     setText("#detail-title", title);
@@ -119,6 +120,15 @@ async function loadAnimeDetails() {
     }
     const safeImageUrl = validExternalUrl(imageUrl);
     if (safeImageUrl) document.querySelector("#detail-backdrop").style.backgroundImage = `url("${safeImageUrl}")`;
+    const poster = document.querySelector("#detail-poster");
+    const safePosterUrl = validExternalUrl(posterUrl);
+    poster.hidden = !safePosterUrl;
+    poster.alt = `Cover of ${title}`;
+    poster.onerror = () => {
+      poster.hidden = true;
+      poster.removeAttribute("src");
+    };
+    if (safePosterUrl) poster.src = safePosterUrl;
 
     setText("#detail-genre", genres);
     setText("#detail-year", year);

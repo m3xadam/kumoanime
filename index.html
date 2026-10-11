@@ -18,6 +18,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <script src="anilist-api.js" defer></script>
+    <script src="search-suggestions.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body data-page="catalog">
@@ -35,14 +36,17 @@
       </nav>
 
       <div class="header-actions">
-        <label class="search-box" for="search-input">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m16 16 4 4"></path>
-          </svg>
-          <input id="search-input" type="search" placeholder="Search anime..." autocomplete="off" />
+        <div class="search-box">
+          <button class="search-toggle" id="search-toggle" type="button" aria-label="Open anime search" aria-expanded="false" aria-controls="search-input">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16 16 4 4"></path>
+            </svg>
+          </button>
+          <input id="search-input" type="search" placeholder="Search anime..." autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="anime-search-suggestions" aria-expanded="false" />
           <kbd>/</kbd>
-        </label>
+          <div class="search-suggestions" id="anime-search-suggestions" role="listbox" aria-label="Anime search results" hidden></div>
+        </div>
       </div>
     </header>
 

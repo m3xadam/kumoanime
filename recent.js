@@ -1,17 +1,14 @@
-const search = document.querySelector("#latest-search");
+window.initAnimeSearch("latest-search", "latest-search-toggle");
 const grid = document.querySelector("#latest-grid");
 const count = document.querySelector("#latest-count");
 const status = document.querySelector("#latest-status");
 const moreButton = document.querySelector("#latest-load-more");
 const retryButton = document.querySelector("#latest-retry");
-let searchQuery = "";
 let page = 1;
 let hasNextPage = false;
 let loading = false;
 let reloadWhenIdle = false;
 let requestId = 0;
-let debounceTimer;
-
 function animeTitle(item) {
   return item.title?.english || item.title?.romaji || item.title?.native || "Untitled anime";
 }
@@ -67,17 +64,6 @@ function showStatus(message, isError = false) {
 
 async function loadAiringAnime(nextPage = 1, append = false) {
   if (loading) return;
-  if (searchQuery && searchQuery.length < 3) {
-    requestId += 1;
-    grid.replaceChildren();
-    count.textContent = "";
-    hasNextPage = false;
-    moreButton.hidden = true;
-    retryButton.hidden = true;
-    showStatus("Enter at least 3 characters to search the current AniList season.");
-    return;
-  }
-
   const currentRequest = ++requestId;
   loading = true;
   moreButton.disabled = true;
@@ -92,7 +78,7 @@ async function loadAiringAnime(nextPage = 1, append = false) {
   showStatus("Loading currently airing anime from AniList…");
 
   try {
-    const result = await window.AniList.currentSeasonPage({ page: nextPage, search: searchQuery });
+    const result = await window.AniList.currentSeasonPage({ page: nextPage });
     if (currentRequest !== requestId) return;
     const items = result.data || [];
     grid.append(...items.map(createLatestCard));
@@ -124,28 +110,6 @@ async function loadAiringAnime(nextPage = 1, append = false) {
     }
   }
 }
-
-function refreshAiringAnime() {
-  if (loading) {
-    reloadWhenIdle = true;
-    requestId += 1;
-    return;
-  }
-  loadAiringAnime();
-}
-
-search.addEventListener("input", () => {
-  searchQuery = search.value.trim();
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(refreshAiringAnime, 600);
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-    event.preventDefault();
-    search.focus();
-  }
-});
 
 moreButton.addEventListener("click", () => {
   if (hasNextPage) loadAiringAnime(page + 1, true);
