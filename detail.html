@@ -35,6 +35,15 @@
           <div class="detail-meta" id="detail-meta"></div>
           <p class="detail-description is-collapsed" id="detail-description"></p>
           <button class="description-toggle" id="detail-description-toggle" type="button" aria-expanded="false" hidden>Read more</button>
+          <div class="story-order-picker" id="story-order-picker" hidden>
+            <button class="story-order-button" id="story-order-toggle" type="button" aria-expanded="false" aria-controls="story-order-panel">
+              Show all related anime
+            </button>
+            <div class="story-order-panel" id="story-order-panel" hidden>
+              <p class="story-order-status" id="story-order-status" role="status" aria-live="polite"></p>
+              <div class="story-order-items" id="anime-related"></div>
+            </div>
+          </div>
           <div class="detail-actions">
             <a class="button button-primary" id="detail-play" href="#">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"></path></svg>

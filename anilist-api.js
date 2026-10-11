@@ -165,6 +165,19 @@
     Media(id: $id, type: ANIME) {
       ${ANIME_FIELDS}
       rankings { rank type context year season }
+      relations {
+        edges {
+          relationType(version: 2)
+          node {
+            id
+            type
+            title { romaji english native }
+            coverImage { large }
+            format
+            startDate { year }
+          }
+        }
+      }
       recommendations(sort: [RATING_DESC], perPage: 8) {
         nodes {
           mediaRecommendation {
@@ -174,6 +187,27 @@
             coverImage { large }
             genres
             averageScore
+          }
+        }
+      }
+    }
+  }`;
+
+  const relationsQuery = `query AnimeRelations($ids: [Int!]!, $perPage: Int!) {
+    Page(perPage: $perPage) {
+      media(id_in: $ids, type: ANIME) {
+        id
+        relations {
+          edges {
+            relationType(version: 2)
+            node {
+              id
+              type
+              title { romaji english native }
+              coverImage { large }
+              format
+              startDate { year }
+            }
           }
         }
       }
@@ -227,6 +261,11 @@
     async animeDetails(id) {
       const data = await query(detailQuery, { id: Number(id) });
       return data.Media;
+    },
+    async animeRelations(ids) {
+      if (!ids.length) return [];
+      const data = await query(relationsQuery, { ids, perPage: ids.length });
+      return data.Page.media;
     },
   });
 })();

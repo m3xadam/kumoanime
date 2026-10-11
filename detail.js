@@ -37,6 +37,113 @@ function validExternalUrl(value) {
   }
 }
 
+const STORY_RELATION_LABELS = {
+  PREQUEL: "Prequel",
+  SEQUEL: "Sequel",
+  SIDE_STORY: "Side story",
+  SPIN_OFF: "Spin-off",
+  ALTERNATIVE: "Alternative",
+  SUMMARY: "Summary",
+  COMPILATION: "Compilation",
+  PARENT: "Related series",
+};
+const STORY_RELATION_TYPES = new Set(Object.keys(STORY_RELATION_LABELS));
+
+async function loadRelatedAnime(item) {
+  const related = new Map();
+  const visited = new Set([item.id]);
+  const frontier = [];
+  const addRelation = (relation) => {
+    const media = relation?.node;
+    if (!STORY_RELATION_TYPES.has(relation?.relationType) || media?.type !== "ANIME" || media.id === item.id) return;
+    let entry = related.get(media.id);
+    if (!entry) {
+      entry = { media, relationTypes: new Set() };
+      related.set(media.id, entry);
+    }
+    entry.relationTypes.add(relation.relationType);
+    if (!visited.has(media.id)) {
+      visited.add(media.id);
+      frontier.push(media.id);
+    }
+  };
+
+  for (const relation of item.relations?.edges || []) addRelation(relation);
+  while (frontier.length) {
+    const batch = frontier.splice(0, 50);
+    const anime = await window.AniList.animeRelations(batch);
+    for (const series of anime) {
+      for (const relation of series.relations?.edges || []) addRelation(relation);
+    }
+  }
+
+  return [...related.values()].sort((left, right) => {
+    const yearDifference = (left.media.startDate?.year || Infinity) - (right.media.startDate?.year || Infinity);
+    return yearDifference || animeTitle(left.media).localeCompare(animeTitle(right.media));
+  });
+}
+
+function renderRelatedAnime(items) {
+  const grid = document.querySelector("#anime-related");
+  grid.replaceChildren();
+  for (const { media, relationTypes } of items) {
+    const link = document.createElement("a");
+    link.href = `detail.html?anilist=${encodeURIComponent(media.id)}`;
+    link.className = "story-order-link";
+    const copy = document.createElement("span");
+    copy.className = "story-order-copy";
+    const title = document.createElement("strong");
+    title.textContent = animeTitle(media);
+    const kind = document.createElement("small");
+    kind.textContent = [...relationTypes].map((type) => STORY_RELATION_LABELS[type]).join(" · ");
+    copy.append(title, kind);
+    link.append(copy);
+    grid.append(link);
+  }
+}
+
+let storyOrderAnime;
+let relatedAnimeLoaded = false;
+let relatedAnimeRequest;
+
+function renderStoryOrder(item) {
+  storyOrderAnime = item;
+  relatedAnimeLoaded = false;
+  relatedAnimeRequest = null;
+  const hasRelations = (item.relations?.edges || []).some((relation) =>
+    STORY_RELATION_TYPES.has(relation?.relationType) && relation.node?.type === "ANIME");
+  document.querySelector("#story-order-picker").hidden = !hasRelations;
+  document.querySelector("#story-order-toggle").setAttribute("aria-expanded", "false");
+  document.querySelector("#story-order-panel").hidden = true;
+  document.querySelector("#story-order-status").textContent = "";
+  document.querySelector("#anime-related").replaceChildren();
+}
+
+document.querySelector("#story-order-toggle").addEventListener("click", async (event) => {
+  const toggle = event.currentTarget;
+  const panel = document.querySelector("#story-order-panel");
+  const expanded = toggle.getAttribute("aria-expanded") === "true";
+  toggle.setAttribute("aria-expanded", String(!expanded));
+  panel.hidden = expanded;
+  if (expanded || relatedAnimeLoaded || !storyOrderAnime) return;
+
+  const status = document.querySelector("#story-order-status");
+  status.textContent = "Finding related anime…";
+  if (!relatedAnimeRequest) relatedAnimeRequest = loadRelatedAnime(storyOrderAnime);
+  try {
+    const items = await relatedAnimeRequest;
+    renderRelatedAnime(items);
+    status.textContent = items.length
+      ? `${items.length} related anime found.`
+      : "No related anime were found on AniList.";
+    relatedAnimeLoaded = true;
+  } catch (error) {
+    status.textContent = `Could not load related anime. ${error.message}`;
+    relatedAnimeRequest = null;
+    console.error("AniList related anime request failed:", error);
+  }
+});
+
 function renderRecommendations(recommendations, currentId) {
   const grid = document.querySelector("#related-movies");
   grid.replaceChildren();
@@ -170,6 +277,7 @@ async function loadAnimeDetails() {
     extra.hidden = false;
     detailMain.hidden = false;
     detailError.hidden = true;
+    renderStoryOrder(item);
     renderRecommendations(item.recommendations?.nodes || [], item.id);
   } catch (error) {
     detailMain.hidden = true;
