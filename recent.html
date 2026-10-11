@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="description" content="Browse the latest anime episodes and updates on Kumo Anime." />
-    <title>Latest Updates — Kumo Anime</title>
+    <meta name="description" content="Browse currently airing anime with information supplied by AniList." />
+    <title>Currently Airing Anime — Kumo Anime</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,8 +14,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script src="covers.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="anilist-api.js" defer></script>
     <script src="recent.js" defer></script>
   </head>
   <body data-page="recent">
@@ -26,9 +25,9 @@
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a class="nav-link" href="index.html#home">Home</a>
-        <a class="nav-link" href="index.html#movies">Discover</a>
+        <a class="nav-link" href="index.html#anime-catalog">Discover</a>
         <a class="nav-link" href="index.html#series">Series</a>
-        <a class="nav-link active" href="recent.html" aria-current="page">Latest updates</a>
+        <a class="nav-link active" href="recent.html" aria-current="page">Currently airing</a>
       </nav>
       <div class="header-actions">
         <label class="search-box" for="latest-search">
@@ -43,17 +42,22 @@
     </header>
     <main class="latest-page">
       <section class="latest-intro">
-        <p class="section-kicker">FRESH TO KUMO</p>
-        <h1>Latest updates</h1>
-        <p>Catch up on the newest additions to the anime library, sorted by upload date.</p>
+        <p class="section-kicker">CURRENT SEASON · VIA ANILIST</p>
+        <h1>Currently airing anime</h1>
+        <p>Explore anime airing this season, with titles, covers, scores, and details supplied by AniList.</p>
         <div class="latest-summary"><span class="live-dot"></span><span id="latest-count">Loading updates…</span></div>
       </section>
       <section class="latest-listing" aria-labelledby="latest-list-title">
         <div class="latest-listing-heading">
-          <h2 id="latest-list-title">Recently uploaded</h2>
-          <span>NEWEST FIRST</span>
+          <h2 id="latest-list-title">Airing now</h2>
+          <span>FROM ANILIST</span>
         </div>
+        <p class="anilist-status" id="latest-status" role="status" aria-live="polite">Loading current anime from AniList…</p>
         <div class="latest-grid" id="latest-grid" aria-live="polite"></div>
+        <div class="anilist-pagination">
+          <button class="button button-secondary" id="latest-retry" type="button" hidden>Retry</button>
+          <button class="button button-secondary" id="latest-load-more" type="button" hidden>Load more anime</button>
+        </div>
       </section>
     </main>
     <footer class="site-footer">

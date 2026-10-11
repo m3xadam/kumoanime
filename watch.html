@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="description" content="Watch anime on Kumo Anime." />
-    <title>Now playing — Kumo Anime</title>
+    <meta name="description" content="Play your own authorized anime videos alongside AniList information." />
+    <title>Video Player — Kumo Anime</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,8 +14,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script src="covers.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="anilist-api.js" defer></script>
+    <script src="licensed-streaming.js" defer></script>
     <script src="watch.js" defer></script>
   </head>
   <body data-page="watch">
@@ -27,42 +27,35 @@
     </header>
     <main class="watch-main">
       <section class="player-shell" aria-label="Video player">
-        <video class="video-player" id="video-player" controls playsinline preload="metadata" poster="">
-          <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+        <video class="video-player" id="video-player" controls playsinline preload="metadata" poster="" hidden>
           Sorry, your browser doesn't support embedded video.
         </video>
-        <div class="player-error" id="player-error" hidden>
-          The sample video couldn't be loaded. Check your connection and try again.
+        <div class="player-empty" id="player-empty">
+          <strong id="player-empty-title">Licensed playback unavailable</strong>
+          <span id="player-empty-message">A licensed provider must be configured by the site operator to watch episodes here.</span>
         </div>
       </section>
       <section class="watch-info">
         <div>
-          <p class="section-kicker">ANIME PLAYER PREVIEW</p>
+          <p class="section-kicker">LICENSED VIDEO PLAYER</p>
           <h1 id="watch-title"></h1>
           <p id="watch-meta" class="watch-meta"></p>
+          <p id="watch-episode-meta" class="watch-meta" hidden></p>
         </div>
         <a class="button button-secondary" id="watch-details" href="#">Anime details</a>
       </section>
-      <section class="episode-panel" aria-label="Episode, audio, and download options">
-        <label for="watch-season-select">SEASON
-          <select id="watch-season-select"></select>
-        </label>
-        <label for="episode-select">EPISODE
-          <select id="episode-select"></select>
-        </label>
-        <div class="audio-options" role="group" aria-label="Audio language">
-          <span>AUDIO</span>
-          <button type="button" class="audio-option selected" data-audio="Japanese" aria-pressed="true">日本語 · SUB</button>
-          <button type="button" class="audio-option" data-audio="English" aria-pressed="false">ENGLISH · DUB</button>
+      <section class="streaming-library" aria-labelledby="streaming-title">
+        <div class="local-video-heading">
+          <div>
+            <p class="section-kicker">AUTHORIZED PROVIDER</p>
+            <h2 id="streaming-title">Licensed streaming</h2>
+          </div>
         </div>
-        <div class="download-options" role="group" aria-label="Authorized downloads">
-          <span>DOWNLOAD</span>
-          <button class="download-button" type="button" data-download-audio="Japanese" disabled>Download SUB</button>
-          <button class="download-button" type="button" data-download-audio="English" disabled>Download DUB</button>
-          <small id="download-note">Downloads are unavailable until a licensed file is configured for this episode.</small>
-        </div>
+        <p class="streaming-help">This integration is ready for a licensed provider adapter. Provider credentials belong on your server, never in this page.</p>
+        <p class="streaming-status" id="streaming-status" aria-live="polite">Checking for a configured provider…</p>
+        <ol class="streaming-episode-list" id="streaming-episode-list" hidden></ol>
       </section>
-      <p class="sample-notice">Playback is a short sample clip, not an anime episode. Episode and audio selectors are preview UI. Connect licensed per-episode video and audio sources to enable real streaming.</p>
+      <p class="sample-notice">Anime information comes from AniList. Episodes play through a licensed provider configured on the site server.</p>
     </main>
   </body>
 </html>

@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta
       name="description"
-      content="Stream anime series, anime films, and new episodes on Kumo Anime."
+      content="Browse anime titles, ratings, genres, and details powered by AniList."
     />
     <title>Kumo — Your anime, your way</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script src="covers.js" defer></script>
+    <script src="anilist-api.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body data-page="catalog">
@@ -29,9 +29,9 @@
 
       <nav class="main-nav" aria-label="Main navigation">
         <a class="nav-link active" href="#home">Home</a>
-        <a class="nav-link" href="#movies">Discover</a>
+        <a class="nav-link" href="#anime-catalog">Discover</a>
         <a class="nav-link" href="#series">Series</a>
-        <a class="nav-link" href="recent.html">Recently uploaded</a>
+        <a class="nav-link" href="recent.html">Currently airing</a>
       </nav>
 
       <div class="header-actions">
@@ -50,24 +50,13 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-backdrop"></div>
         <div class="hero-content">
-          <div class="eyebrow"><span class="eyebrow-line"></span> POPULAR ANIME</div>
-          <h1 id="hero-title">SOLO<br />LEVELING</h1>
-          <div class="hero-meta">
-            <span class="rating"><span aria-hidden="true">★</span> 9.0</span>
-            <span>2024</span>
-            <span>2 seasons · 25 episodes</span>
-            <span class="quality-badge">SUB · DUB</span>
-          </div>
-          <p class="hero-description">
-            A low-ranked hunter gains a mysterious power that lets him grow stronger
-            with every battle.
-          </p>
+          <div class="eyebrow"><span class="eyebrow-line"></span> POWERED BY ANILIST</div>
+          <h1 id="hero-title">Loading anime…</h1>
+          <div class="hero-meta"></div>
+          <p class="hero-description">Loading anime information from AniList.</p>
+          <button class="description-toggle" id="hero-description-toggle" type="button" aria-expanded="false" hidden>Read more</button>
           <div class="hero-actions">
-            <button class="button button-primary" id="hero-play" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"></path></svg>
-              Start watching
-            </button>
-            <button class="button button-secondary" id="hero-info" type="button">
+            <button class="button button-secondary" id="hero-info" type="button" disabled>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path>
               </svg>
@@ -75,17 +64,14 @@
             </button>
           </div>
         </div>
-        <div class="hero-pagination" aria-label="Featured title 1 of 3">
-          <span class="pagination-active"></span><span></span><span></span>
-        </div>
-        <div class="hero-caption"><span></span> NOW STREAMING</div>
+        <div class="hero-caption"><span></span> POPULAR ON ANILIST</div>
         <div class="hero-shade"></div>
       </section>
 
       <section class="browse-section" id="movies">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">HANDPICKED FOR YOU</p>
+            <p class="section-kicker">ANIME FROM ANILIST</p>
             <h2>Find your next favorite anime</h2>
           </div>
           <button class="text-button" id="view-all" type="button">
@@ -107,9 +93,38 @@
         </div>
       </section>
 
+      <section class="content-section home-season-section" aria-labelledby="home-season-title">
+        <div class="row-heading">
+          <div>
+            <p class="section-kicker">THIS SEASON · ANILIST</p>
+            <h2 id="home-season-title">Currently airing anime</h2>
+          </div>
+          <a class="text-button" href="recent.html">View more <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="anilist-status" id="home-season-status" role="status" aria-live="polite">Loading this season’s anime from AniList…</p>
+        <button class="text-button" id="home-season-retry" type="button" hidden>Retry loading this season</button>
+        <div class="home-season-grid" id="home-season-grid"></div>
+      </section>
+
+      <section class="anilist-catalog content-section" id="anime-catalog" aria-labelledby="anilist-title">
+        <div class="row-heading">
+          <div>
+            <p class="section-kicker">POWERED BY ANILIST</p>
+            <h2 id="anilist-title">All anime</h2>
+          </div>
+          <p class="anilist-count" id="anilist-count"></p>
+        </div>
+        <p class="anilist-status" id="anilist-status" role="status" aria-live="polite">Loading anime from AniList…</p>
+        <div class="anilist-grid" id="anilist-grid"></div>
+        <div class="anilist-pagination">
+          <button class="button button-secondary" id="anilist-retry" type="button" hidden>Retry</button>
+          <button class="button button-secondary" id="anilist-load-more" type="button" hidden>Load more anime</button>
+        </div>
+      </section>
+
       <section class="content-section" aria-labelledby="trending-title">
         <div class="row-heading">
-          <h2 id="trending-title">Popular anime this week <span class="heading-accent">↗</span></h2>
+          <h2 id="trending-title">Most popular anime <span class="heading-accent">↗</span></h2>
           <div class="carousel-controls">
             <button class="carousel-button" type="button" data-scroll="trending-row" data-direction="-1" aria-label="Scroll trending left">‹</button>
             <button class="carousel-button" type="button" data-scroll="trending-row" data-direction="1" aria-label="Scroll trending right">›</button>
@@ -130,30 +145,6 @@
           </div>
         </div>
         <div class="movie-row" id="recommended-row" aria-live="polite"></div>
-      </section>
-
-      <section class="continue-section content-section">
-        <div class="row-heading">
-          <div>
-            <p class="section-kicker">YOUR NEXT EPISODE IS WAITING</p>
-            <h2>Continue watching</h2>
-          </div>
-          <a class="text-button" href="#movies">See all <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="continue-card">
-          <div class="continue-image">
-            <img alt="Original illustrated cover for Jujutsu Kaisen" />
-            <button class="continue-play" type="button" data-play="Jujutsu Kaisen" data-season="1" data-episode="3">▶</button>
-            <span class="episode-tag">S1:E3</span>
-            <div class="progress-track"><span style="width: 64%"></span></div>
-          </div>
-          <div class="continue-info">
-            <span class="continue-category">ACTION · SUPERNATURAL</span>
-            <h3>Jujutsu Kaisen</h3>
-            <p>Season 1, episode 3 · Continue watching</p>
-          </div>
-          <button class="more-button" type="button" aria-label="More options for Jujutsu Kaisen">···</button>
-        </div>
       </section>
 
     </main>

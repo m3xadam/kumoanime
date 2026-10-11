@@ -1,136 +1,160 @@
 const params = new URLSearchParams(window.location.search);
-const animeId = params.get("id");
-const title = window.KUMO_ANIME.find((item) => item.id === animeId);
+const animeId = params.get("anilist");
 const player = document.querySelector("#video-player");
-const playerError = document.querySelector("#player-error");
+const playerEmpty = document.querySelector("#player-empty");
+const streamingEpisodeList = document.querySelector("#streaming-episode-list");
+const streamingStatus = document.querySelector("#streaming-status");
+let streamingEpisodes = [];
+let currentEpisodeUrl = "";
+let activePlaybackKind = "";
 
-if (!title) {
-  document.querySelector("#watch-title").textContent = "Anime not found";
-  document.querySelector("#watch-meta").textContent = "Choose an anime from the Kumo catalog to start watching.";
-  document.querySelector("#watch-details").hidden = true;
-  player.hidden = true;
-  playerError.hidden = false;
-  playerError.textContent = "This anime isn't in the demo catalog.";
-} else {
-  const parsedSeason = Number.parseInt(params.get("season") || "1", 10);
-  const season = Number.isInteger(parsedSeason) && parsedSeason >= 1 && parsedSeason <= title.seasons.length
-    ? parsedSeason
-    : 1;
-  const parsedEpisode = Number.parseInt(params.get("episode") || "1", 10);
-  let episode = Number.isInteger(parsedEpisode) && parsedEpisode >= 1 && parsedEpisode <= title.seasons[season - 1]
-    ? parsedEpisode
-    : 1;
-  let audio = "Japanese";
-  const seasonSelect = document.querySelector("#watch-season-select");
-  const episodeSelect = document.querySelector("#episode-select");
-  const downloadNote = document.querySelector("#download-note");
-
-  document.title = `Now playing: ${title.title} — Kumo Anime`;
-  document.querySelector("#watch-title").textContent = title.title;
-  document.querySelector("#watch-meta").textContent = `${title.year} · Season ${season}, Episode ${episode} · ${title.genre} · ★ ${title.rating}`;
-  document.querySelector("#watch-back").href = `detail.html?id=${encodeURIComponent(title.id)}&season=${season}`;
-  document.querySelector("#watch-details").href = `detail.html?id=${encodeURIComponent(title.id)}&season=${season}`;
-  player.poster = title.image;
-
-  title.seasons.forEach((_, index) => {
-    const seasonNumber = index + 1;
-    const option = document.createElement("option");
-    option.value = String(seasonNumber);
-    option.textContent = `Season ${seasonNumber}`;
-    seasonSelect.append(option);
-  });
-  seasonSelect.value = String(season);
-
-  function syncRoute() {
-    const nextParams = new URLSearchParams(window.location.search);
-    nextParams.set("id", title.id);
-    nextParams.set("season", String(seasonSelect.value));
-    nextParams.set("episode", String(episode));
-    window.history.replaceState(null, "", `${window.location.pathname}?${nextParams.toString()}`);
-    document.querySelector("#watch-meta").textContent = `${title.year} · Season ${seasonSelect.value}, Episode ${episode} · ${title.genre} · ★ ${title.rating}`;
-    document.querySelector(".watch-info .section-kicker").textContent = `EPISODE ${episode} · SAMPLE PREVIEW`;
-    document.querySelector("#watch-back").href = `detail.html?id=${encodeURIComponent(title.id)}&season=${seasonSelect.value}`;
-    document.querySelector("#watch-details").href = `detail.html?id=${encodeURIComponent(title.id)}&season=${seasonSelect.value}`;
-    updateDownloadOptions();
-  }
-
-  function updateEpisodes(selectedEpisode) {
-    const episodeCount = title.seasons[Number(seasonSelect.value) - 1];
-    episodeSelect.replaceChildren();
-    for (let number = 1; number <= episodeCount; number += 1) {
-      const option = document.createElement("option");
-      option.value = String(number);
-      option.textContent = `Episode ${String(number).padStart(2, "0")}`;
-      episodeSelect.append(option);
-    }
-    episode = Math.min(selectedEpisode, episodeCount);
-    episodeSelect.value = String(episode);
-  }
-
-  function updateDownloadOptions() {
-    const key = `${seasonSelect.value}-${episode}`;
-    for (const button of document.querySelectorAll("[data-download-audio]")) {
-      const language = button.dataset.downloadAudio;
-      const url = title.downloads[`${key}-${language}`];
-      button.disabled = !url;
-      button.onclick = null;
-      button.removeAttribute("aria-label");
-      if (!url) {
-        button.setAttribute("aria-label", `No licensed ${language} download configured for this episode`);
-        continue;
-      }
-      button.setAttribute("aria-label", `Download episode ${episode}, ${language} audio`);
-      button.onclick = () => {
-        try {
-          const downloadUrl = new URL(url, window.location.href);
-          if (!["http:", "https:", "file:"].includes(downloadUrl.protocol) || downloadUrl.origin !== window.location.origin) {
-            throw new Error("Downloads must be configured with a same-origin licensed media file.");
-          }
-          const anchor = document.createElement("a");
-          anchor.href = downloadUrl.href;
-          const extension = downloadUrl.pathname.match(/\.[a-z0-9]+$/i)?.[0] || ".mp4";
-          anchor.download = `${title.id}-s${seasonSelect.value}e${String(episode).padStart(2, "0")}-${language.toLowerCase()}${extension}`;
-          document.body.append(anchor);
-          anchor.click();
-          anchor.remove();
-          downloadNote.textContent = "Your licensed episode download has started.";
-        } catch (error) {
-          console.error("Could not download the configured episode.", error);
-          downloadNote.textContent = "The authorized download failed. Check the configured file and try again.";
-        }
-      };
-    }
-    downloadNote.textContent = "Downloads are enabled only for episodes with a configured licensed file.";
-  }
-
-  seasonSelect.addEventListener("change", () => {
-    player.pause();
-    player.currentTime = 0;
-    updateEpisodes(1);
-    syncRoute();
-  });
-  episodeSelect.addEventListener("change", () => {
-    player.pause();
-    player.currentTime = 0;
-    episode = Number(episodeSelect.value);
-    syncRoute();
-  });
-  document.querySelectorAll(".audio-option").forEach((button) => {
-    button.addEventListener("click", () => {
-      audio = button.dataset.audio;
-      document.querySelectorAll(".audio-option").forEach((option) => {
-        const selected = option === button;
-        option.classList.toggle("selected", selected);
-        option.setAttribute("aria-pressed", String(selected));
-      });
-      updateDownloadOptions();
+function renderStreamingEpisodes(items) {
+  streamingEpisodes = items
+    .map((episode, index) => ({ ...episode, sourceIndex: index }))
+    .sort((left, right) => {
+      const leftNumber = Number(left.number);
+      const rightNumber = Number(right.number);
+      const hasLeftNumber = Number.isFinite(leftNumber) && leftNumber > 0;
+      const hasRightNumber = Number.isFinite(rightNumber) && rightNumber > 0;
+      if (hasLeftNumber && hasRightNumber) return leftNumber - rightNumber || left.sourceIndex - right.sourceIndex;
+      if (hasLeftNumber) return -1;
+      if (hasRightNumber) return 1;
+      return left.sourceIndex - right.sourceIndex;
     });
-  });
-  player.addEventListener("error", () => {
-    playerError.hidden = false;
-  });
+  streamingEpisodeList.replaceChildren();
 
-  updateEpisodes(episode);
-  syncRoute();
-  updateDownloadOptions();
+  for (const [index, episode] of streamingEpisodes.entries()) {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    const number = document.createElement("span");
+    const copy = document.createElement("span");
+    const title = document.createElement("strong");
+    const playLabel = document.createElement("span");
+
+    button.type = "button";
+    button.className = "episode-card local-episode-button";
+    button.addEventListener("click", () => playStreamingEpisode(index));
+    number.className = "episode-number";
+    number.textContent = String(episode.number || index + 1).padStart(2, "0");
+    copy.className = "episode-card-copy";
+    title.textContent = episode.title || `Episode ${episode.number || index + 1}`;
+    playLabel.className = "episode-card-play";
+    playLabel.setAttribute("aria-hidden", "true");
+    playLabel.textContent = "▶";
+    copy.append(title);
+    button.append(number, copy, playLabel);
+    item.append(button);
+    streamingEpisodeList.append(item);
+  }
+  streamingEpisodeList.hidden = streamingEpisodes.length === 0;
 }
+
+function setStreamingUnavailable(message) {
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  player.hidden = true;
+  playerEmpty.hidden = false;
+  document.querySelector("#player-empty-title").textContent = "Licensed playback unavailable";
+  document.querySelector("#player-empty-message").textContent = message;
+  document.querySelector("#watch-episode-meta").hidden = true;
+  currentEpisodeUrl = "";
+  activePlaybackKind = "";
+}
+
+async function playStreamingEpisode(index) {
+  const episode = streamingEpisodes[index];
+  if (!episode) return;
+
+  streamingStatus.textContent = "Preparing licensed playback…";
+  for (const button of streamingEpisodeList.querySelectorAll("button")) {
+    button.disabled = true;
+  }
+  try {
+    const playback = await window.LicensedStreaming.getPlayback(episode.id);
+    player.pause();
+    player.src = playback.url;
+    player.hidden = false;
+    playerEmpty.hidden = true;
+    player.load();
+    currentEpisodeUrl = playback.url;
+    activePlaybackKind = "streaming";
+    const episodeMeta = document.querySelector("#watch-episode-meta");
+    episodeMeta.textContent = `Now selected: Episode ${episode.number || index + 1} · ${episode.title || `Episode ${index + 1}`}`;
+    episodeMeta.hidden = false;
+    for (const [episodeIndex, button] of [...streamingEpisodeList.querySelectorAll("button")].entries()) {
+      if (episodeIndex === index) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    }
+    streamingStatus.textContent = "Playback source provided by your configured licensed provider.";
+  } catch (error) {
+    streamingStatus.textContent = error.message;
+    setStreamingUnavailable(error.message);
+  } finally {
+    for (const button of streamingEpisodeList.querySelectorAll("button")) {
+      button.disabled = false;
+    }
+  }
+}
+
+async function loadStreamingEpisodes() {
+  if (!/^\d+$/.test(animeId || "")) {
+    streamingStatus.textContent = "Open a title from the AniList catalog to check provider availability.";
+    return;
+  }
+  try {
+    const items = await window.LicensedStreaming.getEpisodes(animeId);
+    renderStreamingEpisodes(items);
+    streamingStatus.textContent = items.length
+      ? `${items.length} episodes available from the configured licensed provider.`
+      : "The licensed provider has no episodes available for this title.";
+  } catch (error) {
+    streamingStatus.textContent = error.message;
+  }
+}
+
+async function loadAnime() {
+  document.querySelector("#watch-title").textContent = "Your videos";
+  document.querySelector("#watch-meta").textContent = "Choose authorized video files from your device.";
+  document.querySelector("#watch-details").hidden = !/^\d+$/.test(animeId || "");
+  if (!/^\d+$/.test(animeId || "")) {
+    loadStreamingEpisodes();
+    return;
+  }
+  loadStreamingEpisodes();
+
+  try {
+    const anime = await window.AniList.animeDetails(animeId);
+    if (!anime) throw new Error("AniList did not return an anime record.");
+
+    const title = anime.title?.english || anime.title?.romaji || anime.title?.native || "Untitled anime";
+    const image = anime.coverImage?.extraLarge || anime.coverImage?.large;
+    document.title = `Video player: ${title} — Kumo Anime`;
+    document.querySelector("#watch-title").textContent = title;
+    document.querySelector("#watch-meta").textContent = [
+      anime.seasonYear || anime.startDate?.year,
+      anime.format?.replaceAll("_", " "),
+      anime.episodes ? `${anime.episodes} episodes` : "Episode count unknown",
+      (anime.genres || []).join(" · "),
+      anime.averageScore ? `★ ${(anime.averageScore / 10).toFixed(1)}` : "Not rated",
+    ].filter(Boolean).join(" · ");
+    if (image) player.poster = image;
+    const detailsUrl = `detail.html?anilist=${encodeURIComponent(anime.id)}`;
+    document.querySelector("#watch-back").href = detailsUrl;
+    document.querySelector("#watch-details").href = detailsUrl;
+  } catch (error) {
+    document.querySelector("#watch-meta").textContent = `AniList information could not be loaded. ${error.message}`;
+    console.error("AniList watch page request failed:", error);
+  }
+}
+
+player.addEventListener("error", () => {
+  if (!currentEpisodeUrl) return;
+  if (activePlaybackKind === "streaming") {
+    streamingStatus.textContent = "The licensed provider’s video could not be played in this browser.";
+    setStreamingUnavailable("The licensed provider’s video could not be played in this browser.");
+    return;
+  }
+});
+
+loadAnime();

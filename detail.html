@@ -14,8 +14,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script src="covers.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="anilist-api.js" defer></script>
     <script src="detail.js" defer></script>
   </head>
   <body data-page="detail">
@@ -23,7 +22,7 @@
       <a class="brand" href="index.html" aria-label="Kumo Anime home">
         <span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span>
       </a>
-      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Browse anime</a>
+      <a class="back-link" href="index.html#anime-catalog"><span aria-hidden="true">←</span> Browse anime</a>
     </header>
     <main id="detail-main" class="detail-main">
       <section class="detail-hero" aria-labelledby="detail-title">
@@ -33,14 +32,15 @@
           <p class="section-kicker" id="detail-kicker"></p>
           <h1 id="detail-title"></h1>
           <div class="detail-meta" id="detail-meta"></div>
-          <p class="detail-description" id="detail-description"></p>
+          <p class="detail-description is-collapsed" id="detail-description"></p>
+          <button class="description-toggle" id="detail-description-toggle" type="button" aria-expanded="false" hidden>Read more</button>
           <div class="detail-actions">
             <a class="button button-primary" id="detail-play" href="#">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"></path></svg>
-              Watch episode 1
+              Open video player
             </a>
           </div>
-          <p class="detail-note">Sub and dub options · Playback preview uses a sample video.</p>
+          <p class="detail-note">Anime information from AniList.</p>
         </div>
       </section>
       <section class="detail-lower">
@@ -50,6 +50,7 @@
           <div><span>STUDIO</span><strong id="detail-studio"></strong></div>
           <div><span>EPISODES</span><strong id="detail-length"></strong></div>
         </div>
+        <div class="anime-extra" id="anime-extra" hidden></div>
         <section class="episodes-section" aria-labelledby="episodes-title">
           <div class="row-heading">
             <div>
