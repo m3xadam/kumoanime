@@ -1,0 +1,26 @@
+.home-season-section {
+  padding-top: 20px;
+}
+
+.home-season-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.home-season-grid .movie-card {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+.home-season-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+.home-season-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}

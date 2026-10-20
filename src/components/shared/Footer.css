@@ -1,0 +1,39 @@
+.site-footer {
+  margin: 50px 5.55% 0;
+  padding: 22px 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-top: 1px solid #202024;
+  color: #77767e;
+  font-size: 9px;
+}
+
+.footer-brand {
+  color: #ddd;
+  font-size: 16px;
+}
+
+.footer-brand .brand-mark {
+  width: 23px;
+  height: 23px;
+  font-size: 14px;
+}
+
+.site-footer p {
+  margin-right: auto;
+}
+
+@media (max-width: 650px) {
+.site-footer {
+    margin: 38px 18px 0;
+    flex-wrap: wrap;
+    gap: 9px 18px;
+  }
+.site-footer p {
+    margin-right: 0;
+  }
+.site-footer > span {
+    width: 100%;
+  }
+}

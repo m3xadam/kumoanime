@@ -1,0 +1,132 @@
+.latest-header {
+  position: relative;
+  inset: auto;
+  height: 76px;
+  background: #0c0c0f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.latest-page {
+  min-height: calc(100vh - 170px);
+  padding: 62px 5.55% 35px;
+}
+
+.latest-intro {
+  padding: 27px 0 32px;
+  border-bottom: 1px solid #242429;
+}
+
+.latest-intro h1 {
+  margin: 0;
+  font: 800 clamp(36px, 5vw, 58px)/1.08 var(--font-display);
+  letter-spacing: -2.6px;
+}
+
+.latest-intro > p:not(.section-kicker) {
+  max-width: 540px;
+  margin: 13px 0 18px;
+  color: #aaa9b0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.latest-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c9c8ce;
+  font-size: 10px;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #8ce2ad;
+  box-shadow: 0 0 9px rgba(140, 226, 173, 0.55);
+}
+
+.latest-listing {
+  padding-top: 28px;
+}
+
+.latest-listing-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 17px;
+}
+
+.latest-listing-heading > div {
+  display: grid;
+  gap: 5px;
+}
+
+.latest-listing-heading h2 {
+  margin: 0;
+  font: 700 19px var(--font-display);
+  letter-spacing: -0.5px;
+}
+
+.latest-listing-note {
+  color: #898890;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.newest-release-note {
+  margin: 12px 0 0;
+  color: #e7c7ff;
+  font-size: 11px;
+}
+
+.refresh-episodes-button {
+  padding: 8px 12px;
+  border: 1px solid #393840;
+  border-radius: 4px;
+}
+
+.refresh-episodes-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.latest-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px 15px;
+}
+
+@media (max-width: 650px) {
+.latest-header {
+    height: 61px;
+  }
+.latest-page {
+    min-height: calc(100vh - 140px);
+    padding: 32px 18px 25px;
+  }
+.latest-intro {
+    padding-top: 21px;
+  }
+.latest-intro h1 {
+    letter-spacing: -1.8px;
+  }
+.latest-intro > p:not(.section-kicker) {
+    font-size: 11px;
+  }
+.latest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 10px;
+  }
+.latest-listing-heading h2 {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 1050px) {
+.latest-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

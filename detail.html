@@ -1,84 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="description" content="Anime details on Kumo Anime." />
-    <title>Anime details — Kumo Anime</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="anilist-api.js" defer></script>
-    <script src="detail.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>Anime details — Kumo Anime</title>
   </head>
-  <body data-page="detail">
-    <header class="page-header">
-      <a class="brand" href="index.html" aria-label="Kumo Anime home">
-        <span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span>
-      </a>
-      <a class="back-link" href="index.html#anime-catalog"><span aria-hidden="true">←</span> Browse anime</a>
-    </header>
-    <main id="detail-main" class="detail-main">
-      <section class="detail-hero" aria-labelledby="detail-title">
-        <div class="detail-backdrop" id="detail-backdrop"></div>
-        <div class="detail-shade"></div>
-        <img class="detail-poster" id="detail-poster" alt="" hidden />
-        <div class="detail-copy">
-          <p class="section-kicker" id="detail-kicker"></p>
-          <h1 id="detail-title"></h1>
-          <div class="detail-meta" id="detail-meta"></div>
-          <p class="detail-description is-collapsed" id="detail-description"></p>
-          <button class="description-toggle" id="detail-description-toggle" type="button" aria-expanded="false" hidden>Read more</button>
-          <div class="story-order-picker" id="story-order-picker" hidden>
-            <button class="story-order-button" id="story-order-toggle" type="button" aria-expanded="false" aria-controls="story-order-panel">
-              Show all related anime
-            </button>
-            <div class="story-order-panel" id="story-order-panel" hidden>
-              <p class="story-order-status" id="story-order-status" role="status" aria-live="polite"></p>
-              <div class="story-order-items" id="anime-related"></div>
-            </div>
-          </div>
-          <div class="detail-actions">
-            <a class="button button-primary" id="detail-play" href="#">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"></path></svg>
-              Open video player
-            </a>
-          </div>
-          <p class="detail-note">Anime information from AniList.</p>
-        </div>
-      </section>
-      <section class="detail-lower">
-        <div class="detail-facts">
-          <div><span>GENRE</span><strong id="detail-genre"></strong></div>
-          <div><span>RELEASED</span><strong id="detail-year"></strong></div>
-          <div><span>STUDIO</span><strong id="detail-studio"></strong></div>
-          <div><span>EPISODES</span><strong id="detail-length"></strong></div>
-        </div>
-        <div class="anime-extra" id="anime-extra" hidden></div>
-        <section class="episodes-section" aria-labelledby="episodes-title">
-          <div class="row-heading">
-            <div>
-              <p class="section-kicker">CHOOSE YOUR NEXT EPISODE</p>
-              <h2 id="episodes-title">Episodes</h2>
-            </div>
-            <label class="season-select-label" for="season-select">SEASON
-              <select id="season-select"></select>
-            </label>
-          </div>
-          <div class="episode-grid" id="episode-list"></div>
-        </section>
-        <section class="related-section" aria-labelledby="related-title">
-          <div class="row-heading"><h2 id="related-title">More to discover</h2></div>
-          <div class="related-grid" id="related-movies"></div>
-        </section>
-      </section>
-    </main>
-    <p class="detail-error" id="detail-error" hidden></p>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

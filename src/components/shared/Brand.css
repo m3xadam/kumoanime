@@ -1,0 +1,30 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font: 800 20px var(--font-display);
+  letter-spacing: -1.1px;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  font: 800 17px var(--font-display);
+  clip-path: polygon(0 0, 100% 0, 100% 76%, 50% 100%, 0 76%);
+}
+
+@media (max-width: 650px) {
+.brand {
+    font-size: 18px;
+  }
+.brand-mark {
+    width: 24px;
+    height: 24px;
+    font-size: 15px;
+  }
+}

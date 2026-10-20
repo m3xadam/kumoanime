@@ -1,0 +1,239 @@
+.episode-panel select {
+  min-width: 132px;
+  padding: 9px 27px 9px 10px;
+  border: 1px solid #393840;
+  border-radius: 4px;
+  background: #19191e;
+  color: #eee;
+  font: 11px var(--font-body);
+  letter-spacing: 0;
+}
+
+.download-help {
+  color: #aaa9b0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.sample-notice {
+  margin: 24px 0 0;
+  padding: 13px 15px;
+  border: 1px solid #29292f;
+  border-radius: 4px;
+  background: #111114;
+  color: #aaa9b0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.sample-notice code {
+  color: #e5e4e8;
+  font-size: 10px;
+}
+
+.download-library {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid #29292f;
+  border-radius: 5px;
+  background: #111114;
+}
+
+.download-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.download-heading h2 {
+  margin: 0;
+  font: 700 19px var(--font-display);
+}
+
+.download-heading .section-kicker {
+  margin-bottom: 6px;
+}
+
+.download-help {
+  margin: 13px 0 0;
+}
+
+.download-status {
+  margin: 12px 0 0;
+  color: #c4c3c8;
+  font-size: 10px;
+}
+
+.download-episode-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.download-episode-list[hidden] {
+  display: none;
+}
+
+.download-episode {
+  min-width: 0;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #29292f;
+  border-radius: 4px;
+  background: #0c0c0f;
+}
+
+.download-episode-link {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.episode-panel {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 17px;
+  border: 1px solid #29292f;
+  border-radius: 5px;
+  background: #111114;
+}
+
+.episode-panel label, .audio-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8f8e96;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.audio-options {
+  flex-wrap: wrap;
+}
+
+.audio-option {
+  padding: 8px 10px;
+  border: 1px solid #393840;
+  border-radius: 4px;
+  background: transparent;
+  color: #bcbac2;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.audio-option:hover, .audio-option.selected {
+  border-color: var(--accent);
+  background: rgba(168, 85, 247, 0.13);
+  color: #fff;
+}
+
+.download-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #8f8e96;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.download-button {
+  padding: 8px 10px;
+  border: 1px solid #393840;
+  border-radius: 4px;
+  background: transparent;
+  color: #eee;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.download-button:not(:disabled):hover {
+  border-color: var(--accent);
+  background: rgba(168, 85, 247, 0.13);
+}
+
+.download-button:disabled {
+  color: #76747d;
+  cursor: not-allowed;
+}
+
+.download-options small {
+  flex-basis: 100%;
+  color: #8f8e96;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+@media (max-width: 650px) {
+.download-library {
+    padding: 14px;
+  }
+.download-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+.download-episode-list {
+    grid-template-columns: 1fr;
+  }
+.download-episode {
+    gap: 9px;
+    padding: 9px;
+  }
+.download-episode-link {
+    padding: 8px 9px;
+  }
+.episode-panel {
+    align-items: start;
+    flex-direction: column;
+    gap: 16px;
+    padding: 13px;
+  }
+.episode-panel label, .audio-options {
+    align-items: start;
+    flex-direction: column;
+  }
+.episode-panel label {
+    display: grid;
+    grid-template-columns: 65px 1fr;
+    align-items: center;
+    width: 100%;
+  }
+.episode-panel label select {
+    width: 100%;
+  }
+.audio-options {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    align-items: center;
+    width: 100%;
+    gap: 7px;
+  }
+.download-options {
+    align-items: start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+.download-options > span, .download-options small {
+    grid-column: 1 / -1;
+  }
+.sample-notice {
+    font-size: 10px;
+  }
+}

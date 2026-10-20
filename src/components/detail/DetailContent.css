@@ -1,0 +1,248 @@
+.anime-extra {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.anime-extra[hidden] {
+  display: none;
+}
+
+.anime-extra div {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+.anime-extra span {
+  color: #898890;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.anime-extra strong, .anime-extra a {
+  color: #e5e4e8;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.anime-extra a {
+  color: var(--accent-bright);
+}
+
+.anime-extra [data-wide] {
+  grid-column: 1 / -1;
+}
+
+.anime-extra [data-wide] strong {
+  color: #aaa9b0;
+}
+
+@media (max-width: 650px) {
+.anime-extra {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.detail-lower {
+  padding: 28px 5.55% 55px;
+}
+
+.detail-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  padding: 17px 0 26px;
+  border-bottom: 1px solid #26262b;
+}
+
+.detail-facts div {
+  display: grid;
+  gap: 7px;
+}
+
+.detail-facts span {
+  color: #898890;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.detail-facts strong {
+  color: #e5e4e8;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.related-section {
+  padding-top: 26px;
+}
+
+.episodes-section {
+  padding: 27px 0 24px;
+  border-bottom: 1px solid #26262b;
+}
+
+.episodes-section .row-heading {
+  align-items: end;
+}
+
+.season-select-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #96949d;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.season-select-label select {
+  min-width: 132px;
+  padding: 9px 27px 9px 10px;
+  border: 1px solid #393840;
+  border-radius: 4px;
+  background: #19191e;
+  color: #eee;
+  font: 11px var(--font-body);
+  letter-spacing: 0;
+}
+
+.episode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.episode-card {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid #29292f;
+  border-radius: 4px;
+  background: #111114;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.episode-card:hover {
+  border-color: var(--accent);
+  background: #18151d;
+}
+
+.episode-card-copy {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.episode-card-copy strong {
+  overflow: hidden;
+  color: #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.episode-card-copy small {
+  color: #92919a;
+  font-size: 9px;
+}
+
+.episode-card-play {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.related-section .row-heading {
+  margin-bottom: 14px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.related-card {
+  overflow: hidden;
+  border: 1px solid #242429;
+  border-radius: 5px;
+  background: var(--surface);
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+}
+
+.related-card:hover {
+  transform: translateY(-3px);
+  border-color: #55545c;
+}
+
+.related-card img {
+  width: 100%;
+  aspect-ratio: 1.6;
+  display: block;
+  object-fit: cover;
+}
+
+.related-card > span {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+}
+
+.related-card strong {
+  overflow: hidden;
+  color: #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.related-card small {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+@media (max-width: 650px) {
+.detail-lower {
+    padding: 15px 20px 40px;
+  }
+.detail-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+.episodes-section {
+    padding-top: 22px;
+  }
+.episodes-section .row-heading {
+    align-items: start;
+    gap: 10px;
+  }
+.season-select-label {
+    align-items: start;
+    flex-direction: column;
+    gap: 6px;
+  }
+.season-select-label select {
+    min-width: 115px;
+  }
+.episode-grid {
+    grid-template-columns: 1fr;
+  }
+.related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}

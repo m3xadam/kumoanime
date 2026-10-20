@@ -1,0 +1,42 @@
+.watch-main {
+  width: min(1180px, calc(100% - 64px));
+  margin: 28px auto 70px;
+}
+
+.watch-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 23px;
+}
+
+.watch-info h1 {
+  margin: 0;
+  font: 700 24px var(--font-display);
+  letter-spacing: -0.7px;
+}
+
+.watch-info #watch-details[hidden] {
+  display: none;
+}
+
+.watch-meta {
+  margin: 8px 0 0;
+  color: #aaa9b0;
+  font-size: 11px;
+}
+
+@media (max-width: 650px) {
+.watch-main {
+    width: calc(100% - 28px);
+    margin: 15px auto 45px;
+  }
+.watch-info {
+    align-items: start;
+    flex-direction: column;
+  }
+.watch-info h1 {
+    font-size: 20px;
+  }
+}

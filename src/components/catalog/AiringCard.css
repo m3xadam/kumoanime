@@ -1,0 +1,149 @@
+.latest-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #222228;
+  border-radius: 5px;
+  background: #111114;
+  transition:
+    transform 0.22s,
+    border-color 0.22s,
+    box-shadow 0.22s;
+}
+
+.latest-card:hover {
+  transform: translateY(-4px);
+  border-color: #4b4056;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+}
+
+.latest-card-link {
+  display: block;
+  height: 100%;
+}
+
+.latest-card:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.latest-poster {
+  aspect-ratio: 0.78 / 1;
+  position: relative;
+  overflow: hidden;
+  background: #171720;
+}
+
+.latest-poster::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+  pointer-events: none;
+}
+
+.latest-poster img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.35s;
+}
+
+.latest-card:hover .latest-poster img {
+  transform: scale(1.04);
+}
+
+.latest-upload-badge, .latest-rating {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  background: rgba(8, 8, 10, 0.76);
+  color: #f3f2f6;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.latest-upload-badge {
+  left: 10px;
+}
+
+.latest-upload-badge .live-dot {
+  width: 5px;
+  height: 5px;
+}
+
+.latest-rating {
+  right: 10px;
+  color: #fff;
+  letter-spacing: 0;
+}
+
+.latest-rating:first-letter {
+  color: #f3c558;
+}
+
+.latest-card-info {
+  padding: 12px 12px 13px;
+}
+
+.latest-upload-date {
+  color: #b987ef;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.latest-card-info h3 {
+  overflow: hidden;
+  margin: 7px 0 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 700 12px var(--font-display);
+}
+
+.latest-card-info p {
+  overflow: hidden;
+  margin: 0;
+  color: #97969e;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9px;
+}
+
+.latest-card-info p span {
+  padding: 0 4px;
+  color: #64636a;
+}
+
+.latest-open-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #d7d4dc;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.latest-open-link span {
+  margin-left: 3px;
+  color: var(--accent-bright);
+}
+
+.latest-empty {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 650px) {
+.latest-card-info {
+    padding: 10px;
+  }
+.latest-card-info h3 {
+    font-size: 11px;
+  }
+}

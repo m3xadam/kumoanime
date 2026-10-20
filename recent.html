@@ -1,73 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
+    <meta name="description" content="Browse recently released anime episodes, sorted newest first." />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="description" content="Browse currently airing anime with information supplied by AniList." />
-    <title>Currently Airing Anime — Kumo Anime</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="anilist-api.js" defer></script>
-    <script src="search-suggestions.js" defer></script>
-    <script src="recent.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>New Episodes — Kumo Anime</title>
   </head>
-  <body data-page="recent">
-    <header class="site-header latest-header">
-      <a class="brand" href="index.html" aria-label="Kumo Anime home">
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>kumo anime</span>
-      </a>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a class="nav-link" href="index.html#home">Home</a>
-        <a class="nav-link" href="index.html#anime-catalog">Discover</a>
-        <a class="nav-link" href="index.html#series">Series</a>
-        <a class="nav-link active" href="recent.html" aria-current="page">Currently airing</a>
-      </nav>
-      <div class="header-actions">
-        <div class="search-box">
-          <button class="search-toggle" id="latest-search-toggle" type="button" aria-label="Open anime search" aria-expanded="false" aria-controls="latest-search">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m16 16 4 4"></path>
-            </svg>
-          </button>
-          <input id="latest-search" type="search" placeholder="Search anime..." autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="anime-search-suggestions" aria-expanded="false" />
-          <kbd>/</kbd>
-          <div class="search-suggestions" id="anime-search-suggestions" role="listbox" aria-label="Anime search results" hidden></div>
-        </div>
-      </div>
-    </header>
-    <main class="latest-page">
-      <section class="latest-intro">
-        <p class="section-kicker">CURRENT SEASON · VIA ANILIST</p>
-        <h1>Currently airing anime</h1>
-        <p>Explore anime airing this season, with titles, covers, scores, and details supplied by AniList.</p>
-        <div class="latest-summary"><span class="live-dot"></span><span id="latest-count">Loading updates…</span></div>
-      </section>
-      <section class="latest-listing" aria-labelledby="latest-list-title">
-        <div class="latest-listing-heading">
-          <h2 id="latest-list-title">Airing now</h2>
-          <span>FROM ANILIST</span>
-        </div>
-        <p class="anilist-status" id="latest-status" role="status" aria-live="polite">Loading current anime from AniList…</p>
-        <div class="latest-grid" id="latest-grid" aria-live="polite"></div>
-        <div class="anilist-pagination">
-          <button class="button button-secondary" id="latest-retry" type="button" hidden>Retry</button>
-          <button class="button button-secondary" id="latest-load-more" type="button" hidden>Load more anime</button>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer">
-      <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span></a>
-      <p>Your next world is one episode away.</p>
-      <span>© 2025 Kumo Anime. All rights reserved.</span>
-    </footer>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

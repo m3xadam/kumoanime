@@ -1,0 +1,129 @@
+.anilist-next-episode, .card-next-episode {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1px solid #c084fc;
+  border-radius: 999px;
+  background: rgba(69, 25, 105, 0.94);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.anilist-next-episode::before, .card-next-episode::before {
+  content: "◷";
+  color: #e9c8ff;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.movie-card {
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.movie-card:hover {
+  z-index: 1;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.movie-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.anilist-next-episode, .card-next-episode {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1;
+}
+
+.poster-wrap {
+  position: relative;
+  aspect-ratio: 0.72 / 1;
+  overflow: hidden;
+  background: #202027;
+}
+
+.poster-wrap img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.movie-card:hover .poster-wrap img {
+  transform: scale(1.04);
+}
+
+.poster-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.53));
+  pointer-events: none;
+}
+
+.poster-rating {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 1;
+  padding: 4px 6px;
+  border-radius: 3px;
+  background: rgba(8, 8, 10, 0.75);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.poster-rating span {
+  color: #f3c558;
+}
+
+.card-info {
+  padding: 10px 10px 11px;
+}
+
+.card-title {
+  overflow: hidden;
+  margin: 0 0 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.card-meta span + span::before {
+  content: "·";
+  margin-right: 7px;
+  color: #686870;
+}
+
+@media (max-width: 650px) {
+.poster-wrap {
+    aspect-ratio: 0.72 / 1;
+  }
+}

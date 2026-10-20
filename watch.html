@@ -1,69 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#09090b" />
+    <meta name="description" content="Download authorized anime episodes on Kumo Anime." />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="description" content="Play your own authorized anime videos alongside AniList information." />
-    <title>Video Player — Kumo Anime</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="anilist-api.js" defer></script>
-    <script src="licensed-streaming.js" defer></script>
-    <script src="watch.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>Download episodes — Kumo Anime</title>
   </head>
-  <body data-page="watch">
-    <header class="watch-header">
-      <a class="brand" href="index.html" aria-label="Kumo Anime home">
-        <span class="brand-mark" aria-hidden="true">K</span><span>kumo anime</span>
-      </a>
-      <a class="back-link" id="watch-back" href="index.html"><span aria-hidden="true">←</span> Back to anime</a>
-    </header>
-    <main class="watch-main">
-      <section class="player-shell" aria-label="Video player">
-        <video class="video-player" id="video-player" controls playsinline preload="metadata" poster="" hidden>
-          Sorry, your browser doesn't support embedded video.
-        </video>
-        <div class="player-empty" id="player-empty">
-          <strong id="player-empty-title">Licensed playback unavailable</strong>
-          <span id="player-empty-message">A licensed provider must be configured by the site operator to watch episodes here.</span>
-        </div>
-      </section>
-      <section class="watch-info">
-        <div>
-          <p class="section-kicker">LICENSED VIDEO PLAYER</p>
-          <h1 id="watch-title"></h1>
-          <p id="watch-meta" class="watch-meta"></p>
-          <p id="watch-episode-meta" class="watch-meta" hidden></p>
-          <div class="next-episode-panel" id="next-episode-panel" hidden>
-            <div class="next-episode-copy">
-              <p class="section-kicker">NEXT EPISODE</p>
-              <strong id="next-episode-title">Episode 1</strong>
-              <span id="next-episode-meta">Up next</span>
-            </div>
-            <button type="button" class="button button-primary" id="next-episode-button">Play next</button>
-          </div>
-        </div>
-        <a class="button button-secondary" id="watch-details" href="#">Anime details</a>
-      </section>
-      <section class="streaming-library" aria-labelledby="streaming-title">
-        <div class="local-video-heading">
-          <div>
-            <p class="section-kicker">AUTHORIZED PROVIDER</p>
-            <h2 id="streaming-title">Licensed streaming</h2>
-          </div>
-        </div>
-        <p class="streaming-help">This integration is ready for a licensed provider adapter. Provider credentials belong on your server, never in this page.</p>
-        <p class="streaming-status" id="streaming-status" aria-live="polite">Checking for a configured provider…</p>
-        <ol class="streaming-episode-list" id="streaming-episode-list" hidden></ol>
-      </section>
-      <p class="sample-notice">Anime information comes from AniList. Episodes play through a licensed provider configured on the site server.</p>
-    </main>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
