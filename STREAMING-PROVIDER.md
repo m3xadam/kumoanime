@@ -15,6 +15,12 @@ For example, with `S3_PREFIX=anime`, AniList ID `1234`, and episode `5`, the obj
 3. Grant the server identity `s3:ListBucket` on the bucket, restricted with the `s3:prefix` condition to the configured prefix, and `s3:GetObject` on `{prefix}/*`.
 4. Start the API and Vite in separate terminals with `npm run api` and `npm run dev`. Vite proxies `/api` to the local API at port 3001.
 
+## Cloudflare Pages
+
+`wrangler.jsonc` and `wrangler.toml` are equivalent Pages configurations for the Vite build output in `dist/`. Keep only one Wrangler config format in a deployment checkout, build with `npm run build`, then deploy the output with `npx wrangler pages deploy dist`.
+
+These configs deploy the static React frontend only. The Node API in `server/` is not a Cloudflare Pages Function and is not deployed by this configuration; deploy that API separately or port it to a Cloudflare Pages Function/Worker before expecting the S3 download routes to work on Cloudflare.
+
 ## API
 
 - `GET /api/licensed-streaming/anime/{anilistId}/episodes` lists matching objects and returns episode numbers in ascending order.
