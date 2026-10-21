@@ -5,9 +5,10 @@ import DownloadPage from "./pages/DownloadPage.jsx";
 import RecentPage from "./pages/RecentPage.jsx";
 
 function getPage(pathname) {
-  if (pathname.endsWith("/detail.html")) return "detail";
-  if (pathname.endsWith("/recent.html")) return "recent";
-  if (pathname.endsWith("/watch.html")) return "download";
+  const route = pathname.split("/").pop();
+  if (route === "detail" || route === "detail.html") return "detail";
+  if (route === "recent" || route === "recent.html") return "recent";
+  if (route === "watch" || route === "watch.html") return "download";
   return "catalog";
 }
 
